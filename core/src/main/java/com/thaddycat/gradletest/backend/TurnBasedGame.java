@@ -1,8 +1,11 @@
 package com.thaddycat.gradletest.backend;
 
+import com.badlogic.gdx.Game;
+import com.thaddycat.gradletest.GameScreen;
+
 import java.util.List;
 
-public class TurnBasedGame {
+public class TurnBasedGame extends Game {
 
     public TurnBasedGame() {
         MapGenerator.generateCellArray(5, 5);
@@ -20,20 +23,24 @@ public class TurnBasedGame {
     }
 
     public void enqueueCommand(Command command) {
-        /* Remove any existing command for this character
-        commandQueue.removeIf(cmd -> cmd.getCharacter() == newCommand.getCharacter());
-        commandQueue.add(newCommand); */
-
-        if (command instanceof MoveCommand) {
-            MoveCommand move = (MoveCommand) command;
-            move.getCharacter().getCommandManager().addCommand(move);
-        } else if (command instanceof AttackCommand) {
-            AttackCommand attack = (AttackCommand) command;
-            attack.getAttacker().getCommandManager().addCommand(attack);
-        } else {
-            System.err.println("Unknown command type: " + command.getClass().getSimpleName());
+        if (command == null || command.getCharacter() == null) {
+            System.out.println("Cannot enqueue command: command or character is null.");
+            return;
         }
+
+        Character character = command.getCharacter();
+        CommandManager cm = character.getCommandManager();
+
+        if (cm == null) {
+            System.out.println("CommandManager is null for " + character.getName());
+            return;
+        }
+
+        cm.setQueuedCommand(command); // 🔁 replaces any previous one
+        System.out.println("Command enqueued for: " + character.getName());
     }
+
+
 
     public void undoStep() {
         System.out.println("[DEBUG] TurnBasedGame.undoStep() called.");
@@ -61,4 +68,8 @@ public class TurnBasedGame {
     }
 
 
+    @Override
+    public void create() {
+        this.setScreen(new GameScreen());
+    }
 }
