@@ -1,36 +1,26 @@
 package com.thaddycat.gradletest;
 
+import com.thaddycat.gradletest.backend.Character;
+import com.thaddycat.gradletest.backend.CharacterGenerator;
+import com.thaddycat.gradletest.backend.CharacterManager;
+
+
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.thaddycat.gradletest.backend.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.thaddycat.gradletest.backend.Character;
 
-import static sun.jvm.hotspot.oops.MethodData.cellSize;
+import java.util.List;
 
 public class GameScreen implements Screen {
     private ShapeRenderer shapeRenderer;
@@ -48,17 +38,34 @@ public class GameScreen implements Screen {
     private Texture swordBlue;
     private Texture swordPink;
     private Texture dropTexture;
+    private CameraWrapper cameraWrapper;
+    private MenuManager menuManager;
+    private InteractionManager interactionManager;
+
 
 
     public GameScreen() {
         shapeRenderer = new ShapeRenderer();
+        OrthographicCamera cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
+        cam.update();
+        cameraWrapper = new CameraWrapper(camera);
+        GameWorldInteractor interactor = new GameWorldInteractor(CharacterManager.getInstance());
+        MenuManager menuManager = new MenuManager();
+        InteractionManager interactionManager = new InteractionManager(interactor);
+        GameStage gameStage = new GameStage(
+            cameraWrapper,
+            menuManager,
+            interactionManager
+        );
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 500); // match your launcher window
         game = new TurnBasedGame(); // Init your logic backend here
-        characters = CharacterManager.loadCharacters();
-        uiManager = new UIManager(game, characters);
-        stage = uiManager.getStage();
+        CharacterGenerator.loadCharacters();
+        characters = CharacterManager.getInstance().getCharacterArrayList(); // Assuming this is how you get the loaded list
         skin = new Skin(Gdx.files.internal("uiskin.json"));
+        stage = new GameStage(cameraWrapper, menuManager, interactionManager);
+        uiManager = new UIManager(gameStage, skin);
         batch = new SpriteBatch();
         dropBlue = new Texture(Gdx.files.internal("drop.png"));
         swordBlue = new Texture(Gdx.files.internal("sword_blue.png"));

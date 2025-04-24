@@ -174,3 +174,10 @@ return currentCommands;
 public void clearQueuedCommands() {
 commandQueue.clear();
 }
+
+****✅ The original CharacterGenerator.java is now preserved with minimal changes and 
+now calls CharacterManager.getInstance().addCharacter(...) when loading characters 
+— just enough to connect it to your planned in-memory management.
+
+
+**** added max hp to ResourcePoints.java

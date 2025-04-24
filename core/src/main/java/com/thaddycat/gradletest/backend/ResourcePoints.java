@@ -1,14 +1,23 @@
 package com.thaddycat.gradletest.backend;
 
 public class ResourcePoints {
-    private int hp, mp, ap, xp, sp;
+    private int hp, mp, ap, xp, sp, max_hp;
 
+    public ResourcePoints(int hp, int mp, int ap, int xp, int sp, int maxHP) {
+        this.hp = hp;
+        this.mp = mp;
+        this.ap = ap;
+        this.xp = xp;
+        this.sp = sp;
+        this.max_hp = max_hp;
+    }
     public ResourcePoints(int hp, int mp, int ap, int xp, int sp) {
         this.hp = hp;
         this.mp = mp;
         this.ap = ap;
         this.xp = xp;
         this.sp = sp;
+        this.max_hp = 100;
     }
 
     public ResourcePoints(int hp, int mp, int ap, int xp) {
@@ -17,6 +26,7 @@ public class ResourcePoints {
         this.ap = ap;
         this.xp = xp;
         this.sp = 0;
+        this.max_hp = 100;
     }
 
     public ResourcePoints(int hp, int mp, int ap) {
@@ -25,6 +35,7 @@ public class ResourcePoints {
         this.ap = ap;
         this.xp = 0;
         this.sp = 0;
+        this.max_hp = 100;
     }
 
     public ResourcePoints(int hp, int mp) {
@@ -33,6 +44,7 @@ public class ResourcePoints {
         this.ap = 0;
         this.xp = 0;
         this.sp = 0;
+        this.max_hp = 100;
     }
 
     public ResourcePoints(int hp) {
@@ -41,6 +53,7 @@ public class ResourcePoints {
         this.ap = 0;
         this.xp = 0;
         this.sp = 0;
+        this.max_hp = 100;
     }
 
     public ResourcePoints() {
@@ -49,6 +62,7 @@ public class ResourcePoints {
         this.ap = 0;
         this.xp = 0;
         this.sp = 0;
+        this.max_hp = 100;
     }
 
     public int getHp() {
@@ -90,4 +104,8 @@ public class ResourcePoints {
     public void setSp(int sp) {
         this.sp = sp;
     }
+
+    public int getMaxHp() {return this.max_hp;}
+
+    public void setMaxHp(int maxHp) {this.max_hp = max_hp;}
 }

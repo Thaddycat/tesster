@@ -1,43 +1,94 @@
 package com.thaddycat.gradletest.backend;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
+import com.badlogic.gdx.math.Vector2;
+
+
+
 
 public class CharacterManager {
-    public static void saveCharacters() {
-        CharacterGenerator.saveCharacters();
+    private static CharacterManager instance;
+    private final List<Character> characters;
+
+    private CharacterManager() {
+        characters = new ArrayList<>();
     }
 
-    public static List<Character> loadCharacters() {
-        File savesDir = new File("saves");
-
-        System.out.println("[DEBUG] Absolute path to saves folder: " + savesDir.getAbsolutePath());
-        System.out.println("[DEBUG] Exists? " + savesDir.exists() + ", Is Directory? " + savesDir.isDirectory());
-
-        List<Character> loadedCharacters = new ArrayList<>();
-
-
-        if (!savesDir.exists() || !savesDir.isDirectory()) {
-            System.err.println("Saves directory not found!");
-            return loadedCharacters;
+    public static CharacterManager getInstance() {
+        if (instance == null) {
+            instance = new CharacterManager();
         }
+        return instance;
+    }
 
-        File[] saveFiles = savesDir.listFiles((dir, name) -> name.endsWith(".txt"));
-        if (saveFiles == null) return loadedCharacters;
+    public void addCharacter(Character character) {
+        characters.add(character);
+    }
 
-        for (File file : saveFiles) {
-            try {
-                System.out.println("Loading next character...");
-                Character loadedChar = CharacterGenerator.loadFromFile(file.getPath());
-                loadedCharacters.add(loadedChar);
-                System.out.println("Loaded: " + loadedChar.getName() + ".\n");
-            } catch (IOException e) {
-                System.err.println("Failed to load " + file.getName() + ": " + e.getMessage());
+    public void removeCharacter(Character character) {
+        characters.remove(character);
+    }
+
+    public List<Character> getCharacterArrayList() {
+        return Collections.unmodifiableList(characters);
+    }
+
+    public List<Character> getPCCharacters() {
+        List<Character> pcs = new ArrayList<>();
+        for (Character c : characters) {
+            if (c instanceof PCCharacter) {
+                pcs.add(c);
             }
         }
+        return pcs;
+    }
 
-        return loadedCharacters;
+    public List<Character> getAliveCharacters() {
+        List<Character> alive = new ArrayList<>();
+        for (Character c : characters) {
+            if (c.getResourcePoints().getHp() > 0) {
+                alive.add(c);
+            }
+        }
+        return alive;
+    }
+
+    public Character getCharacterByName(String name) {
+        for (Character c : characters) {
+            if (c.getName().equalsIgnoreCase(name)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public Character getCharacterAt(Vector2 worldCoords) {
+        for (Character c : characters) {
+            if (c.getPosition().getX() == (int)worldCoords.x &&
+                c.getPosition().getY() == (int)worldCoords.y) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    private Character selectedCharacter;
+
+    public void selectCharacter(Character c) {
+        this.selectedCharacter = c;
+    }
+
+    public void clearSelection() {
+        this.selectedCharacter = null;
+    }
+
+    public Character getSelectedCharacter() {
+        return selectedCharacter;
+    }
+
+    public void clearAll() {
+        characters.clear();
     }
 }

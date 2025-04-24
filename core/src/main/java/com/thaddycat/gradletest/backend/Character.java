@@ -75,5 +75,14 @@ public abstract class Character {
         return sprite;
     }
 
+    public int getHp() {
+        return resourcePoints.getHp();
+    }
+
+    public int getMaxHp() {
+        return resourcePoints.getMaxHp();
+    }
+
+
 
 }

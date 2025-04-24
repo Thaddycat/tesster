@@ -1,7 +1,11 @@
 package com.thaddycat.gradletest.backend;
 
+import com.thaddycat.gradletest.backend.CharacterGenerator;
+
+
 import java.util.List;
-import java.util.stream.Collectors;
+
+
 
 
 public class GameLauncher {
@@ -9,7 +13,6 @@ public class GameLauncher {
         TurnBasedGame game = new TurnBasedGame();
         List<Cell> cellArray = MapGenerator.getCellArray();
 
-        CharacterGenerator.loadCharacters();
 
         List<Character> characterList = Character.getCharacterArrayList();
 

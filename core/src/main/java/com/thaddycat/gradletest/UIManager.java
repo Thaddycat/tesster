@@ -1,5 +1,48 @@
 package com.thaddycat.gradletest;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.thaddycat.gradletest.backend.Character;
+
+
+public class UIManager {
+    private StatsPanel statsPanel;
+    private Character selectedCharacter;
+    private GameStage gameStage;
+
+    public UIManager(GameStage gameStage, Skin skin) {
+        this.gameStage = gameStage;
+        statsPanel = new StatsPanel(skin);
+        gameStage.addActor(statsPanel);
+        statsPanel.update(null, null); // or however you clear it
+    }
+    public void setSelectedCharacter(Character character) {
+        this.selectedCharacter = character;
+        statsPanel.update(character, "N/A");
+    }
+    public Character getSelectedCharacter() {
+        return selectedCharacter;
+    }
+
+    public void clearSelection() {
+        this.selectedCharacter = null;
+        statsPanel.update(null, null);
+    }
+
+    public StatsPanel getStatsPanel() {
+        return statsPanel;
+    }
+
+    public void updateCommandInfo(Character character, String info) {
+        statsPanel.update(selectedCharacter, "N/A");
+    }
+    public void updateCommandText(Character character, String text) {
+        // update a label or internal state here
+    }
+}
+
+
+/*package com.thaddycat.gradletest;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -130,3 +173,4 @@ public class UIManager {
         }
     }
 }
+*/

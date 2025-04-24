@@ -40,8 +40,6 @@ public class TurnBasedGame extends Game {
         System.out.println("Command enqueued for: " + character.getName());
     }
 
-
-
     public void undoStep() {
         System.out.println("[DEBUG] TurnBasedGame.undoStep() called.");
         for (Character c : Character.getCharacterArrayList()) {

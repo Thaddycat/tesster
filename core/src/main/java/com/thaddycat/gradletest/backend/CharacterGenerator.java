@@ -1,10 +1,13 @@
 package com.thaddycat.gradletest.backend;
 
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class CharacterGenerator {
+
+// Preserved original file-based character generator
+public class CharacterGenerator {
     // Load character from .txt file
     public static Character loadFromFile(String filePath) throws IOException {
         boolean isPC = false;
@@ -12,7 +15,6 @@ class CharacterGenerator {
         ResourcePoints resourcePoints = new ResourcePoints();
         Position position = new Position();
         List<String> equipment = new ArrayList<>();
-        String spritePath = "";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -47,7 +49,7 @@ class CharacterGenerator {
                         break;
                     case "Position":
                         String[] coords = value.replaceAll("[^0-9,]", "") // Remove non-numeric chars
-                                .split(",");
+                            .split(",");
                         position.setPosition(Integer.parseInt(coords[0].trim()), Integer.parseInt(coords[1].trim()));
                         break;
                     case "Equipment":
@@ -56,29 +58,14 @@ class CharacterGenerator {
                             for (String item : items) equipment.add(item.trim());
                         }
                         break;
-                    case "sprite":
-                        spritePath = value;
-                        break;
                 }
             }
         }
 
         // Create PC/NPC based on the "PC" flag
-        if (spritePath == null || spritePath.isEmpty()) {
-            System.err.println("[WARNING] spritePath missing for " + name + ", using default.");
-            spritePath = "default.png"; // or any fallback you have
-        }
-
-        Character character;
-        if (isPC) {
-            character = new PCCharacter(name, position, resourcePoints, spritePath);
-            System.out.println("[DEBUG] Loaded PC: " + name + ", sprite: " + spritePath);
-        } else {
-            character = new NPCCharacter(name, position, resourcePoints, spritePath);
-            System.out.println("[DEBUG] Loaded NPC: " + name + ", sprite: " + spritePath);
-        }
-
-        character.setSpritePath(spritePath);
+        Character character = isPC ?
+            new PCCharacter(name, position, resourcePoints, "john.png") :
+            new NPCCharacter(name, position, resourcePoints, "jane,png");
 
         character.getInventory().addAll(equipment);
         return character;
@@ -104,10 +91,6 @@ class CharacterGenerator {
             writer.write("Position: x = " + character.getPosition().getX() + ", y = " + character.getPosition().getY());
             writer.newLine();
             writer.write("Equipment: " + String.join(", ", character.getInventory()));
-            writer.newLine();
-            writer.write("sprite: " + character.getSpritePath());
-            writer.newLine();
-
         }
     }
 
@@ -123,9 +106,7 @@ class CharacterGenerator {
     }
 
     public static void loadCharacters() {
-        System.out.println("[DEBUG] Working directory: " + new java.io.File(".").getAbsolutePath());
-
-        File savesDir = new File("assets/saves");
+        File savesDir = new File("saves");
         if (!savesDir.exists() || !savesDir.isDirectory()) {
             System.err.println("Saves directory not found!");
             return;
@@ -138,6 +119,7 @@ class CharacterGenerator {
             try {
                 System.out.println("Loading next character...");
                 Character loadedChar = CharacterGenerator.loadFromFile(file.getPath());
+                CharacterManager.getInstance().addCharacter(loadedChar);
                 System.out.println("Loaded: " + loadedChar.getName() + ". \n");
             } catch (IOException e) {
                 System.err.println("Failed to load " + file.getName() + ": " + e.getMessage());
