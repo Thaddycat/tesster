@@ -66,7 +66,7 @@ public class CharacterGenerator {
         // Create PC/NPC based on the "PC" flag
         GameCharacter character = isPC ?
             new PCCharacter(name, position, resourcePoints, "john.png") :
-            new NPCCharacter(name, position, resourcePoints, "jane,png");
+            new NPCCharacter(name, position, resourcePoints, "jane.png");
 
         character.getInventory().addAll(equipment);
         return character;
