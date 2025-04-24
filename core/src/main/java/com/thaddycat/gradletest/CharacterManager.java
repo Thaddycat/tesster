@@ -1,16 +1,16 @@
-package com.thaddycat.gradletest.backend;
+package com.thaddycat.gradletest;
+
+import com.badlogic.gdx.math.Vector2;
+import com.thaddycat.gradletest.backend.GameCharacter;
+import com.thaddycat.gradletest.backend.PCCharacter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.*;
-import com.badlogic.gdx.math.Vector2;
-
-
-
 
 public class CharacterManager {
     private static CharacterManager instance;
-    private final List<Character> characters;
+    private final List<GameCharacter> characters;
 
     private CharacterManager() {
         characters = new ArrayList<>();
@@ -23,21 +23,21 @@ public class CharacterManager {
         return instance;
     }
 
-    public void addCharacter(Character character) {
+    public void addCharacter(GameCharacter character) {
         characters.add(character);
     }
 
-    public void removeCharacter(Character character) {
+    public void removeCharacter(GameCharacter character) {
         characters.remove(character);
     }
 
-    public List<Character> getCharacterArrayList() {
+    public List<GameCharacter> getCharacterArrayList() {
         return Collections.unmodifiableList(characters);
     }
 
-    public List<Character> getPCCharacters() {
-        List<Character> pcs = new ArrayList<>();
-        for (Character c : characters) {
+    public List<GameCharacter> getPCCharacters() {
+        List<GameCharacter> pcs = new ArrayList<>();
+        for (GameCharacter c : characters) {
             if (c instanceof PCCharacter) {
                 pcs.add(c);
             }
@@ -45,9 +45,9 @@ public class CharacterManager {
         return pcs;
     }
 
-    public List<Character> getAliveCharacters() {
-        List<Character> alive = new ArrayList<>();
-        for (Character c : characters) {
+    public List<GameCharacter> getAliveCharacters() {
+        List<GameCharacter> alive = new ArrayList<>();
+        for (GameCharacter c : characters) {
             if (c.getResourcePoints().getHp() > 0) {
                 alive.add(c);
             }
@@ -55,8 +55,8 @@ public class CharacterManager {
         return alive;
     }
 
-    public Character getCharacterByName(String name) {
-        for (Character c : characters) {
+    public GameCharacter getCharacterByName(String name) {
+        for (GameCharacter c : characters) {
             if (c.getName().equalsIgnoreCase(name)) {
                 return c;
             }
@@ -64,8 +64,8 @@ public class CharacterManager {
         return null;
     }
 
-    public Character getCharacterAt(Vector2 worldCoords) {
-        for (Character c : characters) {
+    public GameCharacter getCharacterAt(Vector2 worldCoords) {
+        for (GameCharacter c : characters) {
             if (c.getPosition().getX() == (int)worldCoords.x &&
                 c.getPosition().getY() == (int)worldCoords.y) {
                 return c;
@@ -74,9 +74,9 @@ public class CharacterManager {
         return null;
     }
 
-    private Character selectedCharacter;
+    private GameCharacter selectedCharacter;
 
-    public void selectCharacter(Character c) {
+    public void selectCharacter(GameCharacter c) {
         this.selectedCharacter = c;
     }
 
@@ -84,7 +84,7 @@ public class CharacterManager {
         this.selectedCharacter = null;
     }
 
-    public Character getSelectedCharacter() {
+    public GameCharacter getSelectedCharacter() {
         return selectedCharacter;
     }
 

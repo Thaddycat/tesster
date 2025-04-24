@@ -1,5 +1,6 @@
 package com.thaddycat.gradletest.backend;
 
+import com.thaddycat.gradletest.CharacterManager;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 // Preserved original file-based character generator
 public class CharacterGenerator {
     // Load character from .txt file
-    public static Character loadFromFile(String filePath) throws IOException {
+    public static GameCharacter loadFromFile(String filePath) throws IOException {
         boolean isPC = false;
         String name = "";
         ResourcePoints resourcePoints = new ResourcePoints();
@@ -63,7 +64,7 @@ public class CharacterGenerator {
         }
 
         // Create PC/NPC based on the "PC" flag
-        Character character = isPC ?
+        GameCharacter character = isPC ?
             new PCCharacter(name, position, resourcePoints, "john.png") :
             new NPCCharacter(name, position, resourcePoints, "jane,png");
 
@@ -72,7 +73,7 @@ public class CharacterGenerator {
     }
 
     // Save character to .txt file
-    public static void saveToFile(Character character, String filePath) throws IOException {
+    public static void saveToFile(GameCharacter character, String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("PC: " + (character instanceof PCCharacter)); // Detect PC/NPC
             writer.newLine();
@@ -95,7 +96,7 @@ public class CharacterGenerator {
     }
 
     public static void saveCharacters() {
-        for (Character c : Character.getCharacterArrayList()) {
+        for (GameCharacter c : GameCharacter.getCharacterArrayList()) {
             try {
                 CharacterGenerator.saveToFile(c, "saves/" + c.getName() + "_save.txt");
                 System.out.println("Saved: " + c.getName());
@@ -118,7 +119,7 @@ public class CharacterGenerator {
         for (File file : saveFiles) {
             try {
                 System.out.println("Loading next character...");
-                Character loadedChar = CharacterGenerator.loadFromFile(file.getPath());
+                GameCharacter loadedChar = CharacterGenerator.loadFromFile(file.getPath());
                 CharacterManager.getInstance().addCharacter(loadedChar);
                 System.out.println("Loaded: " + loadedChar.getName() + ". \n");
             } catch (IOException e) {

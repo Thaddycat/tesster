@@ -38,7 +38,7 @@ public class CommandMacro implements Command {
     }
 
     @Override
-    public Character getCharacter() {
+    public GameCharacter getCharacter() {
         // Choose how to handle this.
         // If CommandMacro has a character field, return it.
         // If it's a collection of commands, you might return null or the first character.

@@ -1,14 +1,16 @@
 package com.thaddycat.gradletest;
 
 import com.badlogic.gdx.math.Vector2;
-import com.thaddycat.gradletest.backend.CharacterManager;
-import com.thaddycat.gradletest.backend.Character;
+import com.thaddycat.gradletest.backend.GameCharacter;
+import com.thaddycat.gradletest.CharacterManager;
 
-//ask chat if we can make a better name
+//ask chatGPT if we can make a better name
 // Handles character/map interactions, delegated from InteractionManager
 
+/** Handles world‐clicks (map or character selection). */
 public class GameWorldInteractor {
-    private CharacterManager characterManager;
+    private final CharacterManager characterManager;
+
 
     public GameWorldInteractor(CharacterManager characterManager) {
         this.characterManager = characterManager;
@@ -16,7 +18,7 @@ public class GameWorldInteractor {
 
     public void handleWorldClick(Vector2 worldCoords) {
         // Could be map or character
-        Character clicked = characterManager.getCharacterAt(worldCoords);
+        GameCharacter clicked = characterManager.getCharacterAt(worldCoords);
         if (clicked != null) {
             characterManager.selectCharacter(clicked);
         } else {

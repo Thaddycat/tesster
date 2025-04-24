@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 public class AttackCommand implements Command {
-    private final Character attacker;
-    private Character defender;
+    private final GameCharacter attacker;
+    private GameCharacter defender;
     private int previousHP;
     private boolean executed;
 
-    public AttackCommand(Character attacker, Character target) {
+    public AttackCommand(GameCharacter attacker, GameCharacter target) {
         this.attacker = attacker;
         this.defender = target;
 
@@ -50,15 +50,15 @@ public class AttackCommand implements Command {
         this.previousHP = 0;
     }
 
-    public Character getAttacker() {
+    public GameCharacter getAttacker() {
         return attacker;
     }
 
-    public Character getTarget() {
+    public GameCharacter getTarget() {
         return defender;
     }
 
-    public Character getCharacter() {
+    public GameCharacter getCharacter() {
         return this.attacker;
     }
 

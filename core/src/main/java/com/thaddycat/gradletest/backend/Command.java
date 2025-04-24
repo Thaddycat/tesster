@@ -4,5 +4,5 @@ public interface Command {
     void execute();
     void undo();
     void reset();
-    Character getCharacter();
+    GameCharacter getCharacter();
 }

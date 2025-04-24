@@ -3,14 +3,15 @@ package com.thaddycat.gradletest.backend;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.thaddycat.gradletest.AbstractUIWindow;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Character {
-    private static final List<Character> characterArrayList = new ArrayList<>();
+public abstract class GameCharacter {
+    private static final List<GameCharacter> characterArrayList = new ArrayList<>();
     private final List<String> inventory = new ArrayList<>();
-    private final CommandManager commandManager;
+    private final AbstractUIWindow.CommandManager commandManager;
     private final ResourcePoints resourcePoints;
     private final Position position;
     private String name;
@@ -19,11 +20,11 @@ public abstract class Character {
     private Sprite sprite;
 
 
-    public Character(String name, Position position, ResourcePoints resourcePoints, String spritePath) {
+    public GameCharacter(String name, Position position, ResourcePoints resourcePoints, String spritePath) {
         this.name = name;
         this.position = position;
         this.resourcePoints = resourcePoints;
-        this.commandManager = new CommandManager();
+        this.commandManager = new AbstractUIWindow.CommandManager();
         this.spritePath = spritePath;
 
         if (spritePath == null || spritePath.isEmpty()) {
@@ -41,9 +42,9 @@ public abstract class Character {
         characterArrayList.add(this);
     }
 
-    public static List<Character> getCharacterArrayList() { return characterArrayList; }
+    public static List<GameCharacter> getCharacterArrayList() { return characterArrayList; }
 
-    public CommandManager getCommandManager() { return this.commandManager; }
+    public AbstractUIWindow.CommandManager getCommandManager() { return this.commandManager; }
 
     public void setPosition(int x, int y) { position.setPosition(x, y); }
 

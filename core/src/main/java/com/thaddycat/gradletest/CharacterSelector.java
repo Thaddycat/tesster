@@ -33,8 +33,6 @@ public class CharacterSelector {
         selectedCharacter = null;
     }
 
-
-
     private Rectangle getCharacterBounds(PCCharacter character) {
         int cellSize = 32; // or whatever your cell size is
         int padding = 4;

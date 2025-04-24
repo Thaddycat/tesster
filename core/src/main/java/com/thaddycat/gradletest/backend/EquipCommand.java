@@ -17,7 +17,7 @@ public class EquipCommand implements Command {
 
     }
     @Override
-    public Character getCharacter() {
+    public GameCharacter getCharacter() {
         return null;
     }
 

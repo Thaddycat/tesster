@@ -1,7 +1,5 @@
 package com.thaddycat.gradletest.backend;
 
-import com.thaddycat.gradletest.backend.CharacterGenerator;
-
 
 import java.util.List;
 
@@ -14,10 +12,10 @@ public class GameLauncher {
         List<Cell> cellArray = MapGenerator.getCellArray();
 
 
-        List<Character> characterList = Character.getCharacterArrayList();
+        List<GameCharacter> characterList = GameCharacter.getCharacterArrayList();
 
-        Character Jane = Character.getCharacterArrayList().get(0);
-        Character John = characterList.get(characterList.size() - 1);
+        GameCharacter Jane = GameCharacter.getCharacterArrayList().get(0);
+        GameCharacter John = characterList.get(characterList.size() - 1);
 
         for ( int i = 0; i <= 10; i++) {
             John.getCommandManager().addCommand(new MoveCommand(John, cellArray.get(i+1)));

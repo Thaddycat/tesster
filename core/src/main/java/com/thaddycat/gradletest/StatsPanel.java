@@ -3,7 +3,7 @@ package com.thaddycat.gradletest;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.thaddycat.gradletest.backend.Character;
+import com.thaddycat.gradletest.backend.GameCharacter;
 
 public class StatsPanel extends Table {
     private Label nameLabel;
@@ -29,7 +29,7 @@ public class StatsPanel extends Table {
         // add logic to hide/show actual UI elements if needed
     }
 
-    public void updateCommandText(Character character) {
+    public void updateCommandText(GameCharacter character) {
         if (character != null) {
             nameLabel.setText("Name: " + character.getName());
             hpLabel.setText("HP: " + character.getHp() + "/" + character.getMaxHp());
@@ -38,16 +38,11 @@ public class StatsPanel extends Table {
             hpLabel.setText("HP: N/A");
         }
     }
-    public void update(Character character, String queued) {
-        if (character != null) {
-            nameLabel.setText("Name: " + character.getName());
-            hpLabel.setText("HP: " + character.getHp() + "/" + character.getMaxHp());
-            commandLabel.setText("Queued: " + (queued != null ? queued : "N/A"));
-        } else {
-            nameLabel.setText("Name: N/A");
-            hpLabel.setText("HP: N/A");
-            commandLabel.setText("Queued: N/A");
-        }
+    public void update(GameCharacter c, String queuedCommand) {
+        nameLabel.setText(c==null ? "Name: N/A" : "Name: "+c.getName());
+        hpLabel.  setText(c==null ? "HP: N/A"   : "HP: "+c.getHp()+"/"+c.getMaxHp());
+        commandLabel.setText("Queued: "+(queuedCommand==null ? "N/A" : queuedCommand));
     }
-
 }
+
+

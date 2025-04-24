@@ -1,57 +1,34 @@
 package com.thaddycat.gradletest;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Group;
-
-import java.util.List;
-import java.util.ArrayList;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.thaddycat.gradletest.backend.GameCharacter;
 
 public class GameStage extends Stage {
-    private List<ButtonInterface> uiButtons = new ArrayList<>();
-    private CameraWrapper cameraWrapper;
-    private MenuManager menuManager;
-    private InteractionManager interactionManager;
+    private final CameraWrapper      camera;
+    private final InteractionManager interactor;
+    private final MenuManager        menus;
+    private final StatsPanel         stats;
 
-    public GameStage(CameraWrapper cameraWrapper, MenuManager menuManager, InteractionManager interactionManager) {
-        this.cameraWrapper = cameraWrapper;
-        this.menuManager = menuManager;
-        this.interactionManager = interactionManager;
+    public GameStage(CameraWrapper cameraWrapper,
+                     MenuManager menus,
+                     InteractionManager interactor,
+                     Skin skin)
+     {
+        super(new ScreenViewport(cameraWrapper.getCamera())); // calls Stage()
+        this.camera = cameraWrapper;
+        this.menus = menus;
+        this.interactor = interactor;
+        this.stats = new StatsPanel(skin);
+        stats.setPosition(10, Gdx.graphics.getHeight() - 10);
+        addActor(stats);
     }
 
-    public void addUIButton(ButtonInterface button) {
-        uiButtons.add(button);
-        // we assume your GameButton implements Actor or you’ll need to wrap it
-        this.addActor((Actor) button);
+    public void showStatsFor(GameCharacter c) {
+        stats.update(c, GameController.INSTANCE.getQueue().stream()
+            .filter(cmd->cmd.getCharacter()==c)
+            .reduce((a,b)->b).map(Object::toString).orElse("N/A"));
     }
-
-    /**
-     * Call this from your input handler (e.g. on touchDown).
-     * x,y are screen coordinates.
-     */
-    public void handleClick(float x, float y) {
-        // if the click was on any UI button, bail out
-        if (isUIClick(x, y)) return;
-
-        // otherwise turn it into world coords and route to game logic
-        int mx = Gdx.input.getX();
-        int my = Gdx.input.getY();
-        Vector2 world = cameraWrapper.unproject(mx, my);
-        interactionManager.routeClick(world);
-    }
-
-    private boolean isUIClick(float x, float y) {
-        for (ButtonInterface button : uiButtons) {
-            if (((Actor) button).hit(x, y, true) != null) return true;
-        }
-        return false;
-    }
-
-    public void update(float delta) {
-        this.act(delta);
-        this.draw();
-    }
-
 }

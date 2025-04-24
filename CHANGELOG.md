@@ -71,7 +71,7 @@ Character Jane = Character.getCharacterArrayList().getFirst();
 Character John = Character.getCharacterArrayList().getLast();
 
 to:
-List<Character> characterList = Character.getCharacterArrayList();
+List<GameCharacter> characterList = Character.getCharacterArrayList();
 
         Character Jane = Character.getCharacterArrayList().get(0);
         Character John = characterList.get(characterList.size() - 1);

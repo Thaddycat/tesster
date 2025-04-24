@@ -3,11 +3,11 @@ package com.thaddycat.gradletest.backend;
 import com.badlogic.gdx.Gdx;
 
 public class MoveCommand implements Command {
-    private final Character character;
+    private final GameCharacter character;
     private Cell nextCell, previousCell;
     private boolean executed;
 
-    public MoveCommand(Character character, Cell nextCell) {
+    public MoveCommand(GameCharacter character, Cell nextCell) {
         this.character = character;
         this.nextCell = nextCell;
         this.previousCell = MapGenerator.getCellAt(character.getPosition().getX(), character.getPosition().getY());
@@ -54,7 +54,7 @@ public class MoveCommand implements Command {
         this.executed = false;
     }
 
-    public Character getCharacter() {
+    public GameCharacter getCharacter() {
         return character;
     }
 
