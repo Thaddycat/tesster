@@ -31,8 +31,16 @@ public abstract class GameCharacter {
             throw new IllegalArgumentException("spritePath is null or empty!");
         }
 
-        this.texture = new Texture(Gdx.files.internal(spritePath));
+        //set error.png when sprite cant be loaded
+
+        try {
+            this.texture = new Texture(Gdx.files.internal(spritePath));
+        } catch (Exception e) {
+            Gdx.app.error("Character", "Cannot load sprite “"+spritePath+"”, using error.png", e);
+            this.texture = new Texture(Gdx.files.internal("error.png"));
+        }
         this.sprite = new Sprite(this.texture);
+
 
         Cell initialCell = MapGenerator.getCellAt(this.position.getX(), this.position.getY());
         if (initialCell != null && !initialCell.isOccupied()) {

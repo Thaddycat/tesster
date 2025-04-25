@@ -71,12 +71,15 @@ public class GameScreen implements Screen {
             cameraWrapper
         );
         mapRenderer  = new MapRenderer(cells, CELL_SIZE);
-        charRenderer = new CharacterRenderer(batch, characters, CELL_SIZE);
         cmdRenderer  = new CommandRenderer(batch,
             new Texture("drop.png"),
             new Texture("sword_blue.png"),
             new Texture("sword_pink.png"),
             CELL_SIZE);
+
+        // - sprites
+        SpriteInterface spriteInterface = new DefaultSpriteProvider();
+        charRenderer = new CharacterRenderer(batch, characters, CELL_SIZE, spriteInterface);
     }
 
     @Override
