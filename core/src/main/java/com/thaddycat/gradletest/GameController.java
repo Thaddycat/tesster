@@ -18,6 +18,8 @@ public enum GameController {
         backend.undoStep();
     }
 
+    public void enqueueCommand(Command c) {backend.enqueueCommand(c);}
+
     public List<Command> getQueue() {
         return backend.getCommandQueue();
     }

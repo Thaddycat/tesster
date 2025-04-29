@@ -3,7 +3,7 @@ package com.thaddycat.gradletest.backend;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.thaddycat.gradletest.AbstractUIWindow;
+import com.thaddycat.gradletest.CommandManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class GameCharacter {
     private static final List<GameCharacter> characterArrayList = new ArrayList<>();
     private final List<String> inventory = new ArrayList<>();
-    private final AbstractUIWindow.CommandManager commandManager;
+    private final CommandManager commandManager;
     private final ResourcePoints resourcePoints;
     private final Position position;
     private String name;
@@ -24,7 +24,7 @@ public abstract class GameCharacter {
         this.name = name;
         this.position = position;
         this.resourcePoints = resourcePoints;
-        this.commandManager = new AbstractUIWindow.CommandManager();
+        this.commandManager = new CommandManager();
         this.spritePath = spritePath;
 
         if (spritePath == null || spritePath.isEmpty()) {
@@ -52,7 +52,7 @@ public abstract class GameCharacter {
 
     public static List<GameCharacter> getCharacterArrayList() { return characterArrayList; }
 
-    public AbstractUIWindow.CommandManager getCommandManager() { return this.commandManager; }
+    public CommandManager getCommandManager() { return this.commandManager; }
 
     public void setPosition(int x, int y) { position.setPosition(x, y); }
 

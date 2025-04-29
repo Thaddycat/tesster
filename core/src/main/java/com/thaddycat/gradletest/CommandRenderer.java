@@ -1,27 +1,32 @@
 package com.thaddycat.gradletest;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.thaddycat.gradletest.backend.*;
 
+import com.thaddycat.gradletest.backend.AttackCommand;
+import com.thaddycat.gradletest.backend.Command;
+import com.thaddycat.gradletest.backend.MoveCommand;
+import com.thaddycat.gradletest.backend.Cell;
+import com.thaddycat.gradletest.backend.GameCharacter;
+import com.thaddycat.gradletest.backend.MapGenerator;
 
 import java.util.List;
 
 public class CommandRenderer {
     private final SpriteBatch batch;
-    private Texture dropTex, swordBlue, swordPink;
+    private final Texture moveIcon;
+    private final Texture attackIcon;
     private final int cellSize;
 
     public CommandRenderer(SpriteBatch batch,
-                           Texture dropTex, Texture swordBlue, Texture swordPink,
+                           Texture moveIcon,
+                           Texture attackIcon,
                            int cellSize) {
-        this.batch      = batch;
-        this.dropTex    = dropTex;
-        this.swordBlue  = swordBlue;
-        this.swordPink  = swordPink;
-        this.cellSize   = cellSize;
+        this.batch       = batch;
+        this.moveIcon    = moveIcon;
+        this.attackIcon  = attackIcon;
+        this.cellSize    = cellSize;
     }
 
     public void render(OrthographicCamera cam, List<Command> queue) {
@@ -29,32 +34,41 @@ public class CommandRenderer {
         batch.begin();
         for (Command cmd : queue) {
             if (cmd instanceof MoveCommand) {
-                MoveCommand m = (MoveCommand)cmd;
-                Cell t = m.getTarget();
-                if (t != null) {
-                    GameCharacter c = m.getCharacter();
-                    batch.setColor(c.getName().contains("Jane")?1:0.3f,0,0,1);
-                    batch.draw(dropTex, t.getXPos()*cellSize, t.getYPos()*cellSize, cellSize, cellSize);
+                MoveCommand m = (MoveCommand) cmd;
+                Cell targetCell = m.getTarget();
+                if (targetCell != null) {
+                    batch.draw(
+                        moveIcon,
+                        targetCell.getXPos() * cellSize,
+                        targetCell.getYPos() * cellSize,
+                        cellSize, cellSize
+                    );
                 }
             } else if (cmd instanceof AttackCommand) {
-                AttackCommand a = (AttackCommand)cmd;
-                GameCharacter c = a.getAttacker();
-                Cell t = a.getTarget().getPosition()!=null? MapGenerator.getCellAt(a.getTarget().getPosition().getX(), a.getTarget().getPosition().getY()):null;
-                if (t!=null) {
-                    batch.setColor(Color.WHITE);
-                    batch.draw(c.getName().contains("John")?swordBlue:swordPink,
-                        t.getXPos()*cellSize, t.getYPos()*cellSize, cellSize, cellSize);
+                AttackCommand a = (AttackCommand) cmd;
+                GameCharacter defender = a.getTarget();
+                if (defender != null) {
+                    Cell cell = MapGenerator.getCellAt(
+                        defender.getPosition().getX(),
+                        defender.getPosition().getY()
+                    );
+                    if (cell != null) {
+                        batch.draw(
+                            attackIcon,
+                            cell.getXPos() * cellSize,
+                            cell.getYPos() * cellSize,
+                            cellSize, cellSize
+                        );
+                    }
                 }
             }
         }
-        batch.setColor(Color.WHITE);
         batch.end();
     }
 
     public void dispose() {
-        dropTex.dispose();
-        swordBlue.dispose();
-        swordPink.dispose();
+        moveIcon.dispose();
+        attackIcon.dispose();
     }
 }
 

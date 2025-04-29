@@ -4,7 +4,7 @@ import com.thaddycat.gradletest.backend.GameCharacter;
 import com.thaddycat.gradletest.backend.NPCCharacter;
 import com.thaddycat.gradletest.backend.PCCharacter;
 
-public class DefaultSpriteProvider implements SpriteInterface {
+public class DefaultSpriteProvider implements SpriteProvider {
     @Override
     public String getSpritePath(GameCharacter character) {
         // if you ever store a custom sprite path on the character, use that,

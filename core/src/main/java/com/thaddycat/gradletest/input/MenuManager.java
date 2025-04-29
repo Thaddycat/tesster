@@ -1,6 +1,8 @@
-package com.thaddycat.gradletest;
+package com.thaddycat.gradletest.input;
 
 // Handles UIWindow instances, auto-hides on show
+
+import com.thaddycat.gradletest.UIWindow;
 
 import java.util.ArrayList;
 import java.util.List;

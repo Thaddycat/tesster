@@ -1,7 +1,9 @@
-package com.thaddycat.gradletest;
+/*package com.thaddycat.gradletest.input;
 
 
 // For deciding if a click was on UI, map, or character
+
+import com.thaddycat.gradletest.GameStage;
 
 public class ClickRouter {
     private GameStage gameStage;
@@ -14,3 +16,4 @@ public class ClickRouter {
         return gameStage.getViewport().getCamera().viewportWidth < x;
     }
 }
+*/

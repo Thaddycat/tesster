@@ -1,7 +1,7 @@
 package com.thaddycat.gradletest.backend;
 
 import com.badlogic.gdx.Game;
-import com.thaddycat.gradletest.AbstractUIWindow;
+import com.thaddycat.gradletest.CommandManager;
 import com.thaddycat.gradletest.GameScreen;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class TurnBasedGame extends Game {
         }
 
         GameCharacter character = command.getCharacter();
-        AbstractUIWindow.CommandManager cm = character.getCommandManager();
+        CommandManager cm = character.getCommandManager();
 
         if (cm == null) {
             System.out.println("CommandManager is null for " + character.getName());
@@ -44,7 +44,7 @@ public class TurnBasedGame extends Game {
     public void undoStep() {
         System.out.println("[DEBUG] TurnBasedGame.undoStep() called.");
         for (GameCharacter c : GameCharacter.getCharacterArrayList()) {
-            AbstractUIWindow.CommandManager cm = c.getCommandManager();
+            CommandManager cm = c.getCommandManager();
             if (cm == null) {
                 System.err.println("CommandManager is null for " + c.getName());
                 continue;
@@ -58,7 +58,7 @@ public class TurnBasedGame extends Game {
     public List<Command> getCommandQueue() {
         List<Command> allQueued = new java.util.ArrayList<>();
         for (GameCharacter c : GameCharacter.getCharacterArrayList()) {
-            AbstractUIWindow.CommandManager cm = c.getCommandManager();
+            CommandManager cm = c.getCommandManager();
             if (cm != null) {
                 allQueued.addAll(cm.getQueuedCommands()); // ← call to per-character queue
             }
